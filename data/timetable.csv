@@ -1,0 +1,48 @@
+Day,Time,Room,Faculty,Subject,Semester
+Monday,09:00-10:00,A101,Dr. Mehta,Programming Fundamentals,BCA-1
+Monday,10:00-11:00,A102,Prof. Gupta,Discrete Mathematics,BCA-1
+Monday,11:00-12:00,B201,Dr. Sharma,Data Structures,BCA-3
+Monday,12:00-01:00,LT-13,Prof. Patel,Database Management Systems,BCA-3
+Monday,01:00-02:00,LT-15,Dr. Khan,Operating Systems,BCA-5
+Monday,02:00-03:00,Seminar1,Prof. Kaur,Software Engineering,BCA-5
+Tuesday,09:00-10:00,A101,Dr. Iyer,Digital Logic Design,BCA-1
+Tuesday,10:00-11:00,A102,Prof. Reddy,Computer Organization,BCA-1
+Tuesday,11:00-12:00,B201,Prof. Nair,Python Programming,BCA-3
+Tuesday,12:00-01:00,LT-13,Dr. Sharma,Data Communication,BCA-3
+Tuesday,01:00-02:00,Lab1,Dr. Rao,Artificial Intelligence,BCA-5
+Tuesday,02:00-03:00,LT-15,Prof. Kapoor,Computer Networks,BCA-5
+Wednesday,09:00-10:00,A101,Dr. Mehta,Mathematics for Computing,BCA-1
+Wednesday,10:00-11:00,B201,Prof. Kaur,English Communication Skills,BCA-1
+Wednesday,11:00-12:00,LT-13,Dr. Sharma,Design and Analysis of Algorithms,BCA-3
+Wednesday,12:00-01:00,LT-15,Prof. Nair,Web Development,BCA-3
+Wednesday,01:00-02:00,Seminar1,Dr. Khan,Mobile Application Development,BCA-5
+Wednesday,02:00-03:00,Lab1,Prof. Joshi,Compiler Design,BCA-5
+Thursday,09:00-10:00,A102,Dr. Mehta,Environmental Studies,BCA-1
+Thursday,10:00-11:00,B201,Prof. Gupta,C Language,BCA-1
+Thursday,11:00-12:00,LT-13,Dr. Rao,Computer Graphics,BCA-3
+Thursday,12:00-01:00,Seminar1,Prof. Kaur,Operating Systems Lab,BCA-3
+Thursday,01:00-02:00,Lab1,Prof. Singh,Machine Learning,BCA-5
+Thursday,02:00-03:00,LT-15,Prof. Kapoor,Cloud Computing,BCA-5
+Friday,09:00-10:00,A101,Dr. Mehta,Introduction to IT,BCA-1
+Friday,10:00-11:00,A102,Prof. Gupta,Statistics,BCA-1
+Friday,11:00-12:00,B201,Dr. Sharma,Java Programming,BCA-3
+Friday,12:00-01:00,LT-13,Prof. Patel,DBMS Lab,BCA-3
+Friday,01:00-02:00,Lab1,Dr. Khan,Cyber Security,BCA-5
+Friday,02:00-03:00,Seminar1,Prof. Kaur,Project Development,BCA-5
+Saturday,09:00-10:00,A101,Prof. Joshi,Workshop on Excel,BCA-1
+Saturday,10:00-11:00,B201,Dr. Iyer,Workshop on Python,BCA-3
+Saturday,11:00-12:00,LT-13,Prof. Kapoor,Workshop on AI,BCA-5
+
+
+
+
+
+
+
+
+
+
+
+
+
+
