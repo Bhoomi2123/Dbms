@@ -335,11 +335,82 @@
       to { transform: rotate(360deg); }
     }
 
+    /* Calendar Styles */
+    .calendar-table {
+      font-size: 0.85rem;
+    }
+
+    .calendar-table th {
+      text-align: center;
+      vertical-align: middle;
+      font-weight: 600;
+      background: linear-gradient(135deg, var(--primary), var(--primary-light));
+      color: white;
+      padding: 0.75rem;
+    }
+
+    .calendar-table td {
+      height: 80px;
+      vertical-align: top;
+      padding: 0.5rem;
+      position: relative;
+    }
+
+    .calendar-table td.time-cell {
+      background: rgba(93, 64, 55, 0.05);
+      font-weight: 600;
+      text-align: center;
+      vertical-align: middle;
+    }
+
+    .class-slot {
+      background: linear-gradient(135deg, rgba(93, 64, 55, 0.1), rgba(141, 110, 99, 0.1));
+      border-left: 3px solid var(--primary);
+      padding: 0.4rem;
+      margin-bottom: 0.25rem;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      line-height: 1.3;
+      transition: all 0.2s ease;
+    }
+
+    .class-slot:hover {
+      background: linear-gradient(135deg, rgba(93, 64, 55, 0.2), rgba(141, 110, 99, 0.2));
+      transform: translateX(2px);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    .class-slot .room {
+      font-weight: 700;
+      color: var(--primary);
+      display: block;
+    }
+
+    .class-slot .faculty {
+      color: #666;
+      display: block;
+    }
+
+    .class-slot .subject {
+      color: var(--primary-light);
+      font-weight: 500;
+      display: block;
+    }
+
+    .class-slot .semester {
+      color: #999;
+      font-size: 0.7rem;
+      display: block;
+    }
+
     /* Responsive */
     @media (max-width: 768px) {
       .page-title { font-size: 1.5rem; }
       .table { font-size: 0.85rem; }
       .btn { padding: 0.6rem 1rem; font-size: 0.9rem; }
+      .calendar-table { font-size: 0.7rem; }
+      .calendar-table td { height: 60px; padding: 0.25rem; }
+      .class-slot { font-size: 0.65rem; padding: 0.25rem; }
     }
   </style>
 </head>
@@ -438,6 +509,11 @@
           </a>
         </li>
         <li class="nav-item">
+          <a class="nav-link" data-bs-toggle="tab" href="#studentCalendar">
+            <i class="fas fa-calendar-week me-2"></i>Weekly Calendar
+          </a>
+        </li>
+        <li class="nav-item">
           <a class="nav-link" data-bs-toggle="tab" href="#studentBook">
             <i class="fas fa-calendar-plus me-2"></i>Book Room
           </a>
@@ -453,7 +529,11 @@
         <!-- Availability Tab -->
         <div class="tab-pane fade show active" id="studentAvailability">
           <div class="card p-4">
-            <h5 class="mb-4">Available Rooms</h5>
+            <h5 class="mb-4">Room Availability Status</h5>
+            <div class="alert alert-info">
+              <i class="fas fa-info-circle me-2"></i>
+              Showing current availability. Rooms marked as "Booked" have approved bookings.
+            </div>
             <div class="table-responsive">
               <table class="table">
                 <thead>
@@ -461,32 +541,40 @@
                     <th>Room ID</th>
                     <th>Type</th>
                     <th>Capacity</th>
-                    <th>Location</th>
                     <th>Status</th>
                   </tr>
                 </thead>
-                <tbody>
+                <tbody id="availabilityTable">
                   <tr>
-                    <td><strong>C-101</strong></td>
-                    <td><span class="badge bg-primary">Classroom</span></td>
-                    <td>60 Students</td>
-                    <td>Main Block, Floor 1</td>
-                    <td><span class="badge bg-success">Available</span></td>
+                    <td colspan="4" class="text-center text-muted">Loading rooms...</td>
                   </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- Weekly Calendar Tab -->
+        <div class="tab-pane fade" id="studentCalendar">
+          <div class="card p-4">
+            <h5 class="mb-4">
+              <i class="fas fa-calendar-week me-2"></i>Weekly Class Schedule
+            </h5>
+            <div class="table-responsive">
+              <table class="table table-bordered calendar-table">
+                <thead>
                   <tr>
-                    <td><strong>L-201</strong></td>
-                    <td><span class="badge bg-info">Computer Lab</span></td>
-                    <td>30 Systems</td>
-                    <td>Tech Block, Floor 2</td>
-                    <td><span class="badge bg-success">Available</span></td>
+                    <th style="width: 100px;">Time</th>
+                    <th>Monday</th>
+                    <th>Tuesday</th>
+                    <th>Wednesday</th>
+                    <th>Thursday</th>
+                    <th>Friday</th>
+                    <th>Saturday</th>
                   </tr>
-                  <tr>
-                    <td><strong>SH-301</strong></td>
-                    <td><span class="badge bg-warning text-dark">Seminar Hall</span></td>
-                    <td>100 People</td>
-                    <td>Admin Block, Floor 3</td>
-                    <td><span class="badge bg-success">Available</span></td>
-                  </tr>
+                </thead>
+                <tbody id="studentCalendarBody">
+                  <!-- Calendar will be populated by JavaScript -->
                 </tbody>
               </table>
             </div>
@@ -503,9 +591,6 @@
                   <label class="form-label">Select Room</label>
                   <select class="form-select" id="bookRoom" required>
                     <option value="">Choose a room...</option>
-                    <option value="C-101">C-101 - Classroom (60 seats)</option>
-                    <option value="L-201">L-201 - Computer Lab (30 systems)</option>
-                    <option value="SH-301">SH-301 - Seminar Hall (100 people)</option>
                   </select>
                 </div>
                 <div class="col-md-6 mb-3">
@@ -584,6 +669,11 @@
           </a>
         </li>
         <li class="nav-item">
+          <a class="nav-link" data-bs-toggle="tab" href="#hodCalendar">
+            <i class="fas fa-calendar-week me-2"></i>Weekly Calendar
+          </a>
+        </li>
+        <li class="nav-item">
           <a class="nav-link" data-bs-toggle="tab" href="#hodHistory">
             <i class="fas fa-history me-2"></i>History
           </a>
@@ -640,6 +730,33 @@
             </div>
           </div>
         </div>
+
+        <!-- Weekly Calendar Tab -->
+        <div class="tab-pane fade" id="hodCalendar">
+          <div class="card p-4">
+            <h5 class="mb-4">
+              <i class="fas fa-calendar-week me-2"></i>Weekly Class Schedule
+            </h5>
+            <div class="table-responsive">
+              <table class="table table-bordered calendar-table">
+                <thead>
+                  <tr>
+                    <th style="width: 100px;">Time</th>
+                    <th>Monday</th>
+                    <th>Tuesday</th>
+                    <th>Wednesday</th>
+                    <th>Thursday</th>
+                    <th>Friday</th>
+                    <th>Saturday</th>
+                  </tr>
+                </thead>
+                <tbody id="hodCalendarBody">
+                  <!-- Calendar will be populated by JavaScript -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -650,12 +767,17 @@
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <script>
-    // State management
+    // State management - now using API instead of localStorage
     const state = {
       bookings: [],
+      timetable: [],
+      rooms: [],
       currentUser: null,
       currentRole: null
     };
+
+    // API base URL
+    const API_URL = 'http://localhost:8080/api';
 
     // DOM elements
     const loginPage = document.getElementById('loginPage');
@@ -673,30 +795,221 @@
         <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
       `;
       document.getElementById('alertContainer').appendChild(alertDiv);
+      
+      alertDiv.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      
       setTimeout(() => alertDiv.remove(), 5000);
     }
 
+    // Fetch bookings from API
+    async function fetchBookings(student = null, status = null) {
+      try {
+        let url = `${API_URL}/bookings?`;
+        if (student) url += `student=${encodeURIComponent(student)}&`;
+        if (status) url += `status=${status}`;
+        
+        const response = await fetch(url);
+        const data = await response.json();
+        state.bookings = data;
+        return data;
+      } catch (error) {
+        console.error('Error fetching bookings:', error);
+        showAlert('Error loading bookings', 'danger');
+        return [];
+      }
+    }
+
+    // Fetch rooms from API
+    async function fetchRooms() {
+      try {
+        const response = await fetch(`${API_URL}/rooms`);
+        const data = await response.json();
+        state.rooms = data;
+        return data;
+      } catch (error) {
+        console.error('Error fetching rooms:', error);
+        showAlert('Error loading rooms', 'danger');
+        return [];
+      }
+    }
+
+    // Fetch timetable from API
+    async function fetchTimetable() {
+      try {
+        const response = await fetch(`${API_URL}/timetable`);
+        const data = await response.json();
+        state.timetable = data;
+        return data;
+      } catch (error) {
+        console.error('Error fetching timetable:', error);
+        showAlert('Error loading timetable', 'danger');
+        return [];
+      }
+    }
+
+    // Render calendar
+    function renderCalendar(bodyId) {
+      const tbody = document.getElementById(bodyId);
+      if (!tbody) return;
+
+      // Time slots from 8:00 AM to 6:00 PM
+      const timeSlots = [
+        '08:00-09:00', '09:00-10:00', '10:00-11:00', '11:00-12:00',
+        '12:00-13:00', '13:00-14:00', '14:00-15:00', '15:00-16:00',
+        '16:00-17:00', '17:00-18:00'
+      ];
+
+      const weekDays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+
+      tbody.innerHTML = '';
+
+      // Create rows for each time slot
+      timeSlots.forEach(timeSlot => {
+        const row = document.createElement('tr');
+        row.innerHTML = `<td class="time-cell"><strong>${timeSlot}</strong></td>`;
+
+        weekDays.forEach(day => {
+          // Find classes for this day and time
+          const classes = state.timetable.filter(t => 
+            t.day === day && t.time === timeSlot
+          );
+
+          // Find approved bookings for this day and time
+          const approvedBookings = state.bookings.filter(b => {
+            if (b.status !== 'approved') return false;
+            
+            const bookingStart = new Date(b.start);
+            const bookingEnd = new Date(b.end);
+            const [startHour, endHour] = timeSlot.split('-');
+            
+            // Check if booking overlaps with this time slot
+            const slotDay = bookingStart.toLocaleDateString('en-US', { weekday: 'long' });
+            if (slotDay !== day) return false;
+            
+            const bookingStartHour = bookingStart.getHours();
+            const slotStartHour = parseInt(startHour.split(':')[0]);
+            const slotEndHour = parseInt(endHour.split(':')[0]);
+            
+            return bookingStartHour >= slotStartHour && bookingStartHour < slotEndHour;
+          });
+
+          const cell = document.createElement('td');
+          
+          if (classes.length > 0) {
+            classes.forEach(cls => {
+              const classDiv = document.createElement('div');
+              classDiv.className = 'class-slot';
+              classDiv.innerHTML = `
+                <strong>${cls.subject}</strong><br>
+                <small>${cls.room}</small><br>
+                <small>${cls.faculty}</small><br>
+                <small class="text-muted">${cls.semester}</small>
+              `;
+              cell.appendChild(classDiv);
+            });
+          }
+
+          if (approvedBookings.length > 0) {
+            approvedBookings.forEach(booking => {
+              const bookingDiv = document.createElement('div');
+              bookingDiv.className = 'class-slot';
+              bookingDiv.style.borderLeftColor = '#2e7d32';
+              bookingDiv.style.background = 'linear-gradient(135deg, rgba(46, 125, 50, 0.1), rgba(67, 160, 71, 0.1))';
+              bookingDiv.innerHTML = `
+                <strong>📅 ${booking.purpose}</strong><br>
+                <small>${booking.room}</small><br>
+                <small>${booking.student}</small><br>
+                <small class="text-muted">Booked</small>
+              `;
+              cell.appendChild(bookingDiv);
+            });
+          }
+
+          if (classes.length === 0 && approvedBookings.length === 0) {
+            cell.innerHTML = '<span class="text-muted">-</span>';
+          }
+
+          row.appendChild(cell);
+        });
+
+        tbody.appendChild(row);
+      });
+    }
+
+    // Update calendars
+    async function updateCalendars() {
+      await fetchTimetable();
+      await fetchBookings(state.currentRole === 'student' ? state.currentUser : null);
+      renderCalendar('studentCalendarBody');
+      renderCalendar('hodCalendarBody');
+    }
+
+    // Populate room dropdown
+    async function populateRoomDropdown() {
+      await fetchRooms();
+      const select = document.getElementById('bookRoom');
+      select.innerHTML = '<option value="">Choose a room...</option>';
+      
+      state.rooms.forEach(room => {
+        const option = document.createElement('option');
+        option.value = room.id;
+        option.textContent = `${room.id} - ${room.type} (${room.capacity})`;
+        select.appendChild(option);
+      });
+    }
+
     // Login handler
-    document.getElementById('loginForm').addEventListener('submit', (e) => {
+    document.getElementById('loginForm').addEventListener('submit', async (e) => {
       e.preventDefault();
       const email = document.getElementById('loginEmail').value;
+      const password = document.getElementById('loginPassword').value;
       const role = document.getElementById('loginRole').value;
       
-      state.currentUser = email;
-      state.currentRole = role;
-      
-      navUser.textContent = email;
-      logoutBtn.classList.remove('d-none');
-      
-      loginPage.classList.remove('active-page');
-      if (role === 'student') {
-        studentPage.classList.add('active-page');
-      } else {
-        hodPage.classList.add('active-page');
-        updatePendingCount();
+      try {
+        // Validate login with backend
+        const response = await fetch(`${API_URL}/login`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, password, role })
+        });
+        
+        const result = await response.json();
+        
+        if (!result.success) {
+          showAlert(result.message, 'danger');
+          return;
+        }
+        
+        // Login successful
+        state.currentUser = email;
+        state.currentRole = role;
+        
+        navUser.textContent = email;
+        logoutBtn.classList.remove('d-none');
+        
+        loginPage.classList.remove('active-page');
+        
+        if (role === 'student') {
+          studentPage.classList.add('active-page');
+          await fetchBookings(email);  // Load student's bookings
+          await populateRoomDropdown();  // Load available rooms
+          updateMyBookings();
+          updateAvailability();
+          await updateCalendars();  // Load calendar
+        } else {
+          hodPage.classList.add('active-page');
+          await updateCalendars();  // Load calendar
+          await fetchBookings();  // Load all bookings
+          updatePendingRequests();
+          updateHistory();
+          updatePendingCount();
+        }
+        
+        showAlert(`Welcome ${email}!`, 'success');
+      } catch (error) {
+        console.error('Login error:', error);
+        showAlert('Login failed. Please try again.', 'danger');
       }
-      
-      showAlert(`Welcome ${email}!`, 'success');
     });
 
     // Logout handler
@@ -709,37 +1022,51 @@
       document.getElementById('loginForm').reset();
       state.currentUser = null;
       state.currentRole = null;
+      state.bookings = [];
       showAlert('Logged out successfully', 'info');
     });
 
     // Booking form handler
-    document.getElementById('bookingForm').addEventListener('submit', (e) => {
+    document.getElementById('bookingForm').addEventListener('submit', async (e) => {
       e.preventDefault();
       
       const booking = {
-        id: Date.now(),
         student: state.currentUser,
         room: document.getElementById('bookRoom').value,
         purpose: document.getElementById('bookPurpose').value,
         start: document.getElementById('bookStart').value,
         end: document.getElementById('bookEnd').value,
-        notes: document.getElementById('bookNotes').value,
-        status: 'pending',
-        timestamp: new Date().toLocaleString()
+        notes: document.getElementById('bookNotes').value
       };
       
-      state.bookings.push(booking);
-      updateMyBookings();
-      updatePendingRequests();
-      updatePendingCount();
-      
-      e.target.reset();
-      showAlert('Booking request submitted successfully!', 'success');
-      
-      // Switch to My Bookings tab
-      setTimeout(() => {
-        new bootstrap.Tab(document.querySelector('a[href="#studentBookings"]')).show();
-      }, 1000);
+      try {
+        const response = await fetch(`${API_URL}/request`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(booking)
+        });
+        
+        const result = await response.json();
+        
+        if (result.success) {
+          await fetchBookings(state.currentUser);  // Reload bookings
+          updateMyBookings();
+          updateAvailability();
+          
+          e.target.reset();
+          showAlert('Booking request submitted successfully!', 'success');
+          
+          // Switch to My Bookings tab
+          setTimeout(() => {
+            new bootstrap.Tab(document.querySelector('a[href="#studentBookings"]')).show();
+          }, 1000);
+        } else {
+          showAlert('Error submitting booking', 'danger');
+        }
+      } catch (error) {
+        console.error('Error submitting booking:', error);
+        showAlert('Error submitting booking', 'danger');
+      }
     });
 
     // Update My Bookings table
@@ -761,6 +1088,64 @@
           <td><span class="badge bg-${b.status === 'approved' ? 'success' : b.status === 'rejected' ? 'danger' : 'warning'}">${b.status.toUpperCase()}</span></td>
         </tr>
       `).join('');
+    }
+
+    // Update Room Availability table
+    function updateAvailability() {
+      const tbody = document.getElementById('availabilityTable');
+      const now = new Date();
+      const currentDay = now.toLocaleDateString('en-US', { weekday: 'long' });
+      const currentHour = now.getHours();
+      const currentTime = `${currentHour.toString().padStart(2, '0')}:00-${(currentHour + 1).toString().padStart(2, '0')}:00`;
+
+      if (state.rooms.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="4" class="text-center text-muted">Loading rooms...</td></tr>';
+        return;
+      }
+
+      tbody.innerHTML = state.rooms.map(room => {
+        // Check if room has scheduled class right now
+        const hasScheduledClass = state.timetable.some(t => 
+          t.room === room.id && 
+          t.day === currentDay && 
+          t.time === currentTime
+        );
+
+        // Check if room has any approved bookings currently active
+        const activeBooking = state.bookings.find(b => 
+          b.room === room.id && 
+          b.status === 'approved' && 
+          new Date(b.start) <= now && 
+          new Date(b.end) >= now
+        );
+
+        const isBooked = hasScheduledClass || !!activeBooking;
+        let statusBadge, statusDetails;
+        
+        if (hasScheduledClass) {
+          statusBadge = '<span class="badge bg-danger">Class Scheduled</span>';
+          statusDetails = '';
+        } else if (activeBooking) {
+          statusBadge = '<span class="badge bg-warning">Booked</span>';
+          statusDetails = `<br><small class="text-muted">Until ${new Date(activeBooking.end).toLocaleTimeString()}</small>`;
+        } else {
+          statusBadge = '<span class="badge bg-success">Available</span>';
+          statusDetails = '';
+        }
+
+        const typeClass = room.type === 'Classroom' ? 'bg-primary' : 
+                         room.type === 'Computer Lab' ? 'bg-info' : 
+                         room.type === 'Seminar Hall' ? 'bg-warning text-dark' : 'bg-secondary';
+
+        return `
+          <tr>
+            <td><strong>${room.id}</strong></td>
+            <td><span class="badge ${typeClass}">${room.type}</span></td>
+            <td>${room.capacity}</td>
+            <td>${statusBadge}${statusDetails}</td>
+          </tr>
+        `;
+      }).join('');
     }
 
     // Update Pending Requests table
@@ -819,27 +1204,53 @@
     }
 
     // Approve booking
-    window.approveBooking = function(id) {
-      const booking = state.bookings.find(b => b.id === id);
-      if (booking) {
-        booking.status = 'approved';
-        updatePendingRequests();
-        updateHistory();
-        updatePendingCount();
-        showAlert(`Booking for ${booking.room} has been approved`, 'success');
+    window.approveBooking = async function(id) {
+      try {
+        const response = await fetch(`${API_URL}/approve/${id}`, {
+          method: 'POST'
+        });
+        
+        const result = await response.json();
+        
+        if (result.success) {
+          await fetchBookings();  // Reload all bookings
+          updatePendingRequests();
+          updateHistory();
+          updatePendingCount();
+          updateAvailability();
+          showAlert(result.message, 'success');
+        } else {
+          showAlert('Error approving booking', 'danger');
+        }
+      } catch (error) {
+        console.error('Error approving booking:', error);
+        showAlert('Error approving booking', 'danger');
       }
     };
 
     // Reject booking
-    window.rejectBooking = function(id) {
+    window.rejectBooking = async function(id) {
       if (confirm('Are you sure you want to reject this booking?')) {
-        const booking = state.bookings.find(b => b.id === id);
-        if (booking) {
-          booking.status = 'rejected';
-          updatePendingRequests();
-          updateHistory();
-          updatePendingCount();
-          showAlert(`Booking for ${booking.room} has been rejected`, 'info');
+        try {
+          const response = await fetch(`${API_URL}/reject/${id}`, {
+            method: 'POST'
+          });
+          
+          const result = await response.json();
+          
+          if (result.success) {
+            await fetchBookings();  // Reload all bookings
+            updatePendingRequests();
+            updateHistory();
+            updatePendingCount();
+            updateAvailability();
+            showAlert(result.message, 'info');
+          } else {
+            showAlert('Error rejecting booking', 'danger');
+          }
+        } catch (error) {
+          console.error('Error rejecting booking:', error);
+          showAlert('Error rejecting booking', 'danger');
         }
       }
     };
@@ -857,7 +1268,31 @@
       document.getElementById('bookEnd').min = minEnd.toISOString().slice(0, 16);
     });
 
-    console.log('GEU Smart Classroom Booking System - Ready');
+    // Auto-refresh to sync data from database (every 5 seconds)
+    setInterval(async () => {
+      // Only refresh if logged in
+      if (!state.currentUser) return;
+      
+      if (state.currentRole === 'student') {
+        await fetchBookings(state.currentUser);
+        if (studentPage.classList.contains('active-page')) {
+          updateMyBookings();
+          updateAvailability();
+        }
+      } else if (state.currentRole === 'hod') {
+        await fetchBookings();
+        if (hodPage.classList.contains('active-page')) {
+          updatePendingRequests();
+          updateHistory();
+          updatePendingCount();
+        }
+      }
+    }, 5000);
+
+    // Initial availability update
+    updateAvailability();
+
+    console.log('GEU Smart Classroom Booking System - Python Edition Ready');
   </script>
 </body>
 </html>
