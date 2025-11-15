@@ -481,7 +481,7 @@
                 <i class="fas fa-user-tag me-2"></i>Login As
               </label>
               <select id="loginRole" class="form-select">
-                <option value="student">Student</option>
+                <option value="faculty">Faculty</option>
                 <option value="hod">Head of Department (HOD)</option>
               </select>
             </div>
@@ -493,33 +493,33 @@
       </div>
     </div>
 
-    <!-- STUDENT DASHBOARD -->
-    <div id="studentPage" class="page">
+    <!-- FACULTY DASHBOARD -->
+    <div id="facultyPage" class="page">
       <div class="mb-4">
         <h1 class="page-title">
-          <i class="fas fa-user-graduate me-2"></i>Student Dashboard
+          <i class="fas fa-user-graduate me-2"></i>Faculty Dashboard
         </h1>
         <p class="page-subtitle">Book classrooms and labs for your academic activities</p>
       </div>
 
       <ul class="nav nav-tabs">
         <li class="nav-item">
-          <a class="nav-link active" data-bs-toggle="tab" href="#studentAvailability">
+          <a class="nav-link active" data-bs-toggle="tab" href="#facultyAvailability">
             <i class="fas fa-search me-2"></i>Check Availability
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" data-bs-toggle="tab" href="#studentCalendar">
+          <a class="nav-link" data-bs-toggle="tab" href="#facultyCalendar">
             <i class="fas fa-calendar-week me-2"></i>Weekly Calendar
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" data-bs-toggle="tab" href="#studentBook">
+          <a class="nav-link" data-bs-toggle="tab" href="#facultyBook">
             <i class="fas fa-calendar-plus me-2"></i>Book Room
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" data-bs-toggle="tab" href="#studentBookings">
+          <a class="nav-link" data-bs-toggle="tab" href="#facultyBookings">
             <i class="fas fa-list me-2"></i>My Bookings
           </a>
         </li>
@@ -527,7 +527,7 @@
 
       <div class="tab-content mt-4">
         <!-- Availability Tab -->
-        <div class="tab-pane fade show active" id="studentAvailability">
+        <div class="tab-pane fade show active" id="facultyAvailability">
           <div class="card p-4">
             <h5 class="mb-4">Room Availability Status</h5>
             <div class="alert alert-info">
@@ -555,7 +555,7 @@
         </div>
 
         <!-- Weekly Calendar Tab -->
-        <div class="tab-pane fade" id="studentCalendar">
+        <div class="tab-pane fade" id="facultyCalendar">
           <div class="card p-4">
             <h5 class="mb-4">
               <i class="fas fa-calendar-week me-2"></i>Weekly Class Schedule
@@ -573,7 +573,7 @@
                     <th>Saturday</th>
                   </tr>
                 </thead>
-                <tbody id="studentCalendarBody">
+                <tbody id="facultyCalendarBody">
                   <!-- Calendar will be populated by JavaScript -->
                 </tbody>
               </table>
@@ -582,10 +582,22 @@
         </div>
 
         <!-- Booking Tab -->
-        <div class="tab-pane fade" id="studentBook">
+        <div class="tab-pane fade" id="facultyBook">
           <div class="card p-4">
             <h5 class="mb-4">Create New Booking</h5>
             <form id="bookingForm">
+              <div class="row">
+                <div class="col-md-6 mb-3">
+                  <label class="form-label">Faculty Name</label>
+                  <select class="form-select" id="bookFacultyName" required>
+                    <option value="">Select your name...</option>
+                  </select>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label class="form-label">Subject</label>
+                  <input type="text" class="form-control" id="bookSubject" placeholder="Enter subject name" required>
+                </div>
+              </div>
               <div class="row">
                 <div class="col-md-6 mb-3">
                   <label class="form-label">Select Room</label>
@@ -626,7 +638,7 @@
         </div>
 
         <!-- My Bookings Tab -->
-        <div class="tab-pane fade" id="studentBookings">
+        <div class="tab-pane fade" id="facultyBookings">
           <div class="card p-4">
             <h5 class="mb-4">My Booking Requests</h5>
             <div class="table-responsive">
@@ -634,6 +646,7 @@
                 <thead>
                   <tr>
                     <th>Room</th>
+                    <th>Subject</th>
                     <th>Purpose</th>
                     <th>Start Time</th>
                     <th>End Time</th>
@@ -642,7 +655,7 @@
                 </thead>
                 <tbody id="myBookingsTable">
                   <tr>
-                    <td colspan="5" class="text-center text-muted">No bookings yet</td>
+                    <td colspan="6" class="text-center text-muted">No bookings yet</td>
                   </tr>
                 </tbody>
               </table>
@@ -689,7 +702,8 @@
               <table class="table">
                 <thead>
                   <tr>
-                    <th>Student</th>
+                    <th>Faculty</th>
+                    <th>Subject</th>
                     <th>Room</th>
                     <th>Purpose</th>
                     <th>Time</th>
@@ -698,7 +712,7 @@
                 </thead>
                 <tbody id="pendingTable">
                   <tr>
-                    <td colspan="5" class="text-center text-muted">No pending requests</td>
+                    <td colspan="6" class="text-center text-muted">No pending requests</td>
                   </tr>
                 </tbody>
               </table>
@@ -714,7 +728,8 @@
               <table class="table">
                 <thead>
                   <tr>
-                    <th>Student</th>
+                    <th>Faculty</th>
+                    <th>Subject</th>
                     <th>Room</th>
                     <th>Purpose</th>
                     <th>Time</th>
@@ -723,7 +738,7 @@
                 </thead>
                 <tbody id="historyTable">
                   <tr>
-                    <td colspan="5" class="text-center text-muted">No history available</td>
+                    <td colspan="6" class="text-center text-muted">No history available</td>
                   </tr>
                 </tbody>
               </table>
@@ -772,6 +787,7 @@
       bookings: [],
       timetable: [],
       rooms: [],
+      facultyList: [],
       currentUser: null,
       currentRole: null
     };
@@ -781,7 +797,7 @@
 
     // DOM elements
     const loginPage = document.getElementById('loginPage');
-    const studentPage = document.getElementById('studentPage');
+    const facultyPage = document.getElementById('facultyPage');
     const hodPage = document.getElementById('hodPage');
     const navUser = document.getElementById('navUser');
     const logoutBtn = document.getElementById('logoutBtn');
@@ -802,10 +818,10 @@
     }
 
     // Fetch bookings from API
-    async function fetchBookings(student = null, status = null) {
+    async function fetchBookings(faculty = null, status = null) {
       try {
         let url = `${API_URL}/bookings?`;
-        if (student) url += `student=${encodeURIComponent(student)}&`;
+        if (faculty) url += `faculty=${encodeURIComponent(faculty)}&`;
         if (status) url += `status=${status}`;
         
         const response = await fetch(url);
@@ -817,6 +833,33 @@
         showAlert('Error loading bookings', 'danger');
         return [];
       }
+    }
+
+    // Fetch faculty list from API
+    async function fetchFaculty() {
+      try {
+        const response = await fetch(`${API_URL}/faculty`);
+        const data = await response.json();
+        state.facultyList = data;
+        return data;
+      } catch (error) {
+        console.error('Error fetching faculty:', error);
+        showAlert('Error loading faculty list', 'danger');
+        return [];
+      }
+    }
+
+    // Populate faculty dropdown
+    async function populateFacultyDropdown() {
+      const facultyList = await fetchFaculty();
+      const dropdown = document.getElementById('bookFacultyName');
+      dropdown.innerHTML = '<option value="">Select your name...</option>';
+      facultyList.forEach(faculty => {
+        const option = document.createElement('option');
+        option.value = faculty;
+        option.textContent = faculty;
+        dropdown.appendChild(option);
+      });
     }
 
     // Fetch rooms from API
@@ -845,6 +888,94 @@
         showAlert('Error loading timetable', 'danger');
         return [];
       }
+    }
+
+    // Check if booking conflicts with timetable
+    function checkTimetableConflict(room, startDate, endDate) {
+      const start = new Date(startDate);
+      const end = new Date(endDate);
+      const dayOfWeek = start.toLocaleDateString('en-US', { weekday: 'long' });
+      
+      console.log('Checking conflict for:', {
+        room,
+        dayOfWeek,
+        startTime: start.toLocaleTimeString(),
+        endTime: end.toLocaleTimeString(),
+        timetableEntries: state.timetable.length
+      });
+      
+      // Get the time range in HH:MM format
+      const startHour = start.getHours();
+      const startMin = start.getMinutes();
+      const endHour = end.getHours();
+      const endMin = end.getMinutes();
+      
+      // Check all timetable entries for this room and day
+      const conflicts = state.timetable.filter(entry => {
+        if (entry.room !== room || entry.day !== dayOfWeek) return false;
+        
+        // Parse timetable time (format: "08:00-09:00" or "13:00-14:00")
+        const [tStart, tEnd] = entry.time.split('-');
+        const [tStartHour, tStartMin] = tStart.split(':').map(Number);
+        const [tEndHour, tEndMin] = tEnd.split(':').map(Number);
+        
+        // Convert to minutes for easy comparison
+        const bookingStartMins = startHour * 60 + startMin;
+        const bookingEndMins = endHour * 60 + endMin;
+        const timetableStartMins = tStartHour * 60 + tStartMin;
+        const timetableEndMins = tEndHour * 60 + tEndMin;
+        
+        console.log('Checking against:', {
+          entry: entry.subject,
+          time: entry.time,
+          bookingRange: `${bookingStartMins}-${bookingEndMins}`,
+          timetableRange: `${timetableStartMins}-${timetableEndMins}`
+        });
+        
+        // Check if there's an overlap
+        return (bookingStartMins < timetableEndMins && bookingEndMins > timetableStartMins);
+      });
+      
+      console.log('Conflicts found:', conflicts);
+      return conflicts;
+    }
+
+    // Check if booking conflicts with existing approved bookings
+    function checkBookingConflict(room, startDate, endDate) {
+      const start = new Date(startDate);
+      const end = new Date(endDate);
+      
+      console.log('Checking booking conflicts for:', {
+        room,
+        startDate: start.toLocaleString(),
+        endDate: end.toLocaleString(),
+        totalBookings: state.bookings.length
+      });
+      
+      // Check all approved bookings for this room
+      const conflicts = state.bookings.filter(booking => {
+        // Only check approved bookings
+        if (booking.status !== 'approved' || booking.room !== room) return false;
+        
+        const bookingStart = new Date(booking.start);
+        const bookingEnd = new Date(booking.end);
+        
+        // Check if the dates and times overlap
+        const hasOverlap = (start < bookingEnd && end > bookingStart);
+        
+        if (hasOverlap) {
+          console.log('Conflict found with booking:', {
+            faculty: booking.facultyName || booking.faculty,
+            subject: booking.subject,
+            start: bookingStart.toLocaleString(),
+            end: bookingEnd.toLocaleString()
+          });
+        }
+        
+        return hasOverlap;
+      });
+      
+      return conflicts;
     }
 
     // Render calendar
@@ -916,9 +1047,9 @@
               bookingDiv.style.borderLeftColor = '#2e7d32';
               bookingDiv.style.background = 'linear-gradient(135deg, rgba(46, 125, 50, 0.1), rgba(67, 160, 71, 0.1))';
               bookingDiv.innerHTML = `
-                <strong>📅 ${booking.purpose}</strong><br>
+                <strong>📅 ${booking.subject || booking.purpose}</strong><br>
                 <small>${booking.room}</small><br>
-                <small>${booking.student}</small><br>
+                <small>${booking.facultyName || booking.faculty}</small><br>
                 <small class="text-muted">Booked</small>
               `;
               cell.appendChild(bookingDiv);
@@ -939,8 +1070,8 @@
     // Update calendars
     async function updateCalendars() {
       await fetchTimetable();
-      await fetchBookings(state.currentRole === 'student' ? state.currentUser : null);
-      renderCalendar('studentCalendarBody');
+      await fetchBookings(state.currentRole === 'faculty' ? state.currentUser : null);
+      renderCalendar('facultyCalendarBody');
       renderCalendar('hodCalendarBody');
     }
 
@@ -989,10 +1120,12 @@
         
         loginPage.classList.remove('active-page');
         
-        if (role === 'student') {
-          studentPage.classList.add('active-page');
-          await fetchBookings(email);  // Load student's bookings
+        if (role === 'faculty') {
+          facultyPage.classList.add('active-page');
+          await fetchTimetable();  // Load timetable first for conflict checking
+          await fetchBookings(email);  // Load faculty's bookings
           await populateRoomDropdown();  // Load available rooms
+          await populateFacultyDropdown();  // Load faculty names
           updateMyBookings();
           updateAvailability();
           await updateCalendars();  // Load calendar
@@ -1014,7 +1147,7 @@
 
     // Logout handler
     logoutBtn.addEventListener('click', () => {
-      studentPage.classList.remove('active-page');
+      facultyPage.classList.remove('active-page');
       hodPage.classList.remove('active-page');
       loginPage.classList.add('active-page');
       navUser.textContent = '';
@@ -1031,13 +1164,39 @@
       e.preventDefault();
       
       const booking = {
-        student: state.currentUser,
+        faculty: state.currentUser,
+        facultyName: document.getElementById('bookFacultyName').value,
+        subject: document.getElementById('bookSubject').value,
         room: document.getElementById('bookRoom').value,
         purpose: document.getElementById('bookPurpose').value,
         start: document.getElementById('bookStart').value,
         end: document.getElementById('bookEnd').value,
         notes: document.getElementById('bookNotes').value
       };
+      
+      // Check for timetable conflicts
+      const timetableConflicts = checkTimetableConflict(booking.room, booking.start, booking.end);
+      if (timetableConflicts.length > 0) {
+        const conflict = timetableConflicts[0];
+        showAlert(
+          `Class is not free at selected time! ${conflict.room} is scheduled for ${conflict.subject} (${conflict.faculty}) on ${conflict.day} at ${conflict.time}`,
+          'danger'
+        );
+        return;
+      }
+      
+      // Check for existing booking conflicts
+      const bookingConflicts = checkBookingConflict(booking.room, booking.start, booking.end);
+      if (bookingConflicts.length > 0) {
+        const conflict = bookingConflicts[0];
+        const conflictStart = new Date(conflict.start).toLocaleString();
+        const conflictEnd = new Date(conflict.end).toLocaleString();
+        showAlert(
+          `Room is already booked! ${conflict.room} is booked by ${conflict.facultyName || conflict.faculty} for ${conflict.subject || conflict.purpose} from ${conflictStart} to ${conflictEnd}`,
+          'danger'
+        );
+        return;
+      }
       
       try {
         const response = await fetch(`${API_URL}/request`, {
@@ -1058,7 +1217,7 @@
           
           // Switch to My Bookings tab
           setTimeout(() => {
-            new bootstrap.Tab(document.querySelector('a[href="#studentBookings"]')).show();
+            new bootstrap.Tab(document.querySelector('a[href="#facultyBookings"]')).show();
           }, 1000);
         } else {
           showAlert('Error submitting booking', 'danger');
@@ -1072,16 +1231,17 @@
     // Update My Bookings table
     function updateMyBookings() {
       const tbody = document.getElementById('myBookingsTable');
-      const userBookings = state.bookings.filter(b => b.student === state.currentUser);
+      const userBookings = state.bookings.filter(b => b.faculty === state.currentUser);
       
       if (userBookings.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="5" class="text-center text-muted">No bookings yet</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="6" class="text-center text-muted">No bookings yet</td></tr>';
         return;
       }
       
       tbody.innerHTML = userBookings.map(b => `
         <tr>
           <td><strong>${b.room}</strong></td>
+          <td>${b.subject || 'N/A'}</td>
           <td>${b.purpose}</td>
           <td>${new Date(b.start).toLocaleString()}</td>
           <td>${new Date(b.end).toLocaleString()}</td>
@@ -1126,8 +1286,10 @@
           statusBadge = '<span class="badge bg-danger">Class Scheduled</span>';
           statusDetails = '';
         } else if (activeBooking) {
+          const startTime = new Date(activeBooking.start).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+          const endTime = new Date(activeBooking.end).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
           statusBadge = '<span class="badge bg-warning">Booked</span>';
-          statusDetails = `<br><small class="text-muted">Until ${new Date(activeBooking.end).toLocaleTimeString()}</small>`;
+          statusDetails = `<br><small class="text-muted">${startTime} - ${endTime}</small>`;
         } else {
           statusBadge = '<span class="badge bg-success">Available</span>';
           statusDetails = '';
@@ -1154,13 +1316,14 @@
       const pending = state.bookings.filter(b => b.status === 'pending');
       
       if (pending.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="5" class="text-center text-muted">No pending requests</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="6" class="text-center text-muted">No pending requests</td></tr>';
         return;
       }
       
       tbody.innerHTML = pending.map(b => `
         <tr data-id="${b.id}">
-          <td>${b.student}</td>
+          <td>${b.facultyName || b.faculty}</td>
+          <td>${b.subject || 'N/A'}</td>
           <td><strong>${b.room}</strong></td>
           <td>${b.purpose}</td>
           <td>${new Date(b.start).toLocaleString()}</td>
@@ -1182,13 +1345,14 @@
       const processed = state.bookings.filter(b => b.status !== 'pending');
       
       if (processed.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="5" class="text-center text-muted">No history available</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="6" class="text-center text-muted">No history available</td></tr>';
         return;
       }
       
       tbody.innerHTML = processed.map(b => `
         <tr>
-          <td>${b.student}</td>
+          <td>${b.facultyName || b.faculty}</td>
+          <td>${b.subject || 'N/A'}</td>
           <td><strong>${b.room}</strong></td>
           <td>${b.purpose}</td>
           <td>${new Date(b.start).toLocaleString()}</td>
@@ -1273,9 +1437,9 @@
       // Only refresh if logged in
       if (!state.currentUser) return;
       
-      if (state.currentRole === 'student') {
+      if (state.currentRole === 'faculty') {
         await fetchBookings(state.currentUser);
-        if (studentPage.classList.contains('active-page')) {
+        if (facultyPage.classList.contains('active-page')) {
           updateMyBookings();
           updateAvailability();
         }
