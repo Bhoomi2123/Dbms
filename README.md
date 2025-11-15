@@ -4,10 +4,10 @@ A comprehensive web-based room booking and timetable management system for Graph
 
 ## Features
 
-### Student Portal
+### Faculty Portal
 - **Check Room Availability** - Real-time status of all classrooms, labs, and seminar halls
 - **Weekly Calendar View** - Visual display of scheduled classes and approved bookings
-- **Book Rooms** - Request bookings for various purposes (lectures, practicals, seminars, meetings)
+- **Book Rooms** - Request bookings for various purposes (lectures, practicals, seminars, meetings) with subject and faculty name
 - **My Bookings** - Track status of all submitted booking requests
 - **Auto-refresh** - Updates every 5 seconds to sync with database
 
@@ -92,10 +92,10 @@ Dbms/
 - **Password:** `qwerty123`
 - **Role:** Head of Department (HOD)
 
-### Student Access
-- **Email:** Any valid email format (e.g., `student@geu.ac.in`)
+### Faculty Access
+- **Email:** Any valid email format (e.g., `faculty@geu.ac.in`)
 - **Password:** Not required
-- **Role:** Student
+- **Role:** Faculty
 
 ## Database Schema
 
@@ -103,7 +103,7 @@ Dbms/
 - `id` - Primary key
 - `email` - Unique user email
 - `password` - User password (HOD only)
-- `role` - User role (student/hod)
+- `role` - User role (faculty/hod)
 - `name` - Display name
 - `created_at` - Account creation timestamp
 
@@ -118,8 +118,10 @@ Dbms/
 
 ### Bookings Table
 - `id` - Primary key
-- `student` - Student email
+- `faculty` - Faculty email
+- `faculty_name` - Faculty member's name
 - `room` - Room ID
+- `subject` - Subject/Course name
 - `purpose` - Booking purpose
 - `start_time` - Booking start
 - `end_time` - Booking end
@@ -154,6 +156,7 @@ Tuesday,09:00-10:00,Lab1,Dr. Iyer,Digital Logic Design,BCA-1
 
 - `GET /` - Serve frontend application
 - `POST /api/login` - User authentication
+- `GET /api/faculty` - Get all faculty names from timetable
 - `GET /api/rooms` - Get all available rooms
 - `GET /api/timetable` - Get complete class schedule
 - `GET /api/bookings` - Get all bookings (with filters)
@@ -200,12 +203,14 @@ pip install --upgrade -r requirements.txt
 
 ## Usage Workflow
 
-### For Students:
+### For Faculty:
 1. Log in with university email
-2. Check room availability in real-time
-3. View weekly calendar for scheduled classes
-4. Submit booking request with details
-5. Monitor request status in "My Bookings"
+2. Select your name from the dropdown
+3. Enter subject name for the class
+4. Check room availability in real-time
+5. View weekly calendar for scheduled classes
+6. Submit booking request with details
+7. Monitor request status in "My Bookings"
 
 ### For HOD:
 1. Log in with HOD credentials
