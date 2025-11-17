@@ -45,8 +45,10 @@ def init_db():
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS bookings (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
-            student TEXT NOT NULL,
+            faculty TEXT NOT NULL,
+            faculty_name TEXT,
             room TEXT NOT NULL,
+            subject TEXT,
             purpose TEXT NOT NULL,
             start_time TEXT NOT NULL,
             end_time TEXT NOT NULL,
@@ -176,17 +178,17 @@ def login():
                 'message': 'Invalid credentials'
             }), 401
     
-    elif role == 'student':
+    elif role == 'faculty':
         if email and '@' in email:
-            # Check if student exists, if not create entry
-            cursor.execute('SELECT * FROM users WHERE email = ? AND role = ?', (email, 'student'))
+            # Check if faculty exists, if not create entry
+            cursor.execute('SELECT * FROM users WHERE email = ? AND role = ?', (email, 'faculty'))
             user = cursor.fetchone()
             
             if not user:
                 cursor.execute('''
                     INSERT INTO users (email, password, role, created_at)
                     VALUES (?, ?, ?, ?)
-                ''', (email, '', 'student', datetime.now().isoformat()))
+                ''', (email, '', 'faculty', datetime.now().isoformat()))
                 conn.commit()
             
             conn.close()
@@ -195,7 +197,7 @@ def login():
                 'message': 'Login successful',
                 'user': {
                     'email': email,
-                    'role': 'student'
+                    'role': 'faculty'
                 }
             })
         else:
@@ -210,6 +212,19 @@ def login():
         'success': False,
         'message': 'Invalid role'
     }), 400
+
+@app.route('/api/faculty', methods=['GET'])
+def get_faculty():
+    """Get all unique faculty names from timetable"""
+    conn = get_db()
+    cursor = conn.cursor()
+    
+    cursor.execute('SELECT DISTINCT faculty FROM timetable ORDER BY faculty')
+    rows = cursor.fetchall()
+    
+    faculty_list = [row['faculty'] for row in rows]
+    conn.close()
+    return jsonify(faculty_list)
 
 @app.route('/api/rooms', methods=['GET'])
 def get_rooms():
@@ -307,7 +322,7 @@ def get_empty_rooms():
 @app.route('/api/bookings', methods=['GET'])
 def get_bookings():
     """Get all bookings"""
-    student = request.args.get('student')
+    faculty = request.args.get('faculty')
     status = request.args.get('status')
     
     conn = get_db()
@@ -317,9 +332,9 @@ def get_bookings():
     params = []
     
     conditions = []
-    if student:
-        conditions.append('student = ?')
-        params.append(student)
+    if faculty:
+        conditions.append('faculty = ?')
+        params.append(faculty)
     if status:
         conditions.append('status = ?')
         params.append(status)
@@ -334,7 +349,9 @@ def get_bookings():
     
     bookings = [{
         'id': row['id'],
-        'student': row['student'],
+        'faculty': row['faculty'],
+        'facultyName': row['faculty_name'] if 'faculty_name' in row.keys() else '',
+        'subject': row['subject'] if 'subject' in row.keys() else '',
         'room': row['room'],
         'purpose': row['purpose'],
         'start': row['start_time'],
@@ -358,11 +375,13 @@ def create_booking():
     cursor = conn.cursor()
     
     cursor.execute('''
-        INSERT INTO bookings (student, room, purpose, start_time, end_time, notes, status, timestamp)
-        VALUES (?, ?, ?, ?, ?, ?, 'pending', ?)
+        INSERT INTO bookings (faculty, faculty_name, room, subject, purpose, start_time, end_time, notes, status, timestamp)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'pending', ?)
     ''', (
-        data['student'],
+        data['faculty'],
+        data.get('facultyName', ''),
         data['room'],
+        data.get('subject', ''),
         data['purpose'],
         data['start'],
         data['end'],
