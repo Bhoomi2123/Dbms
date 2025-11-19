@@ -1,0 +1,14 @@
+13 unique faculty members id based on timetable.csv:
+Dr. Mehta → 2000007@geu.ac.in
+Prof. Gupta → 2000001@geu.ac.in
+Dr. Sharma → 2000012@geu.ac.in
+Prof. Patel → 2000009@geu.ac.in
+Dr. Khan → 2000004@geu.ac.in
+Prof. Kaur → 2000006@geu.ac.in
+Dr. Iyer → 2000002@geu.ac.in
+Prof. Reddy → 2000011@geu.ac.in
+Prof. Nair → 2000008@geu.ac.in
+Dr. Rao → 2000010@geu.ac.in
+Prof. Kapoor → 2000005@geu.ac.in
+Prof. Joshi → 2000003@geu.ac.in
+Prof. Singh → 2000013@geu.ac.in
